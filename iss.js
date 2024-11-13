@@ -45,4 +45,32 @@ const fetchCoordsByIP = function(ip, callback) {
   });
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP };
+// fetch flyover times
+const fetchISSFlyOverTimes = function(coords, callback) {
+  const { latitude, longitude } = coords;
+  const url = `https://iss-flyover.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`;
+
+  //request to the ISS API
+  needle.get(url, (err, response) => {
+    if (err) {
+      callback(`Error fetching ISS flyover times: ${err.message}`);
+      return;
+    }
+
+    if (response.statusCode === 200) {
+      const flyoverTimes = response.body.response;
+
+      // check API response contains flyover times
+      if (flyoverTimes && flyoverTimes.length > 0) {
+        callback(null, flyoverTimes);
+      } else {
+        callback('There are no flyovers found for the given location.');
+      }
+    } else {
+      callback(`Failed to fetch ISS flyover times, status code: ${response.statusCode}`);
+    }
+  });
+
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes };
