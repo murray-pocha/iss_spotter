@@ -31,7 +31,6 @@ const fetchCoordsByIP = function(ip, callback) {
     }
 
     if (response.statusCode === 200) {
-
       const { latitude, longitude } = response.body;
 
       if (response.body.success) {
@@ -45,7 +44,7 @@ const fetchCoordsByIP = function(ip, callback) {
   });
 };
 
-// fetch flyover times
+// fetch flyover times based on coordinates
 const fetchISSFlyOverTimes = function(coords, callback) {
   const { latitude, longitude } = coords;
   const url = `https://iss-flyover.herokuapp.com/json/?lat=${coords.latitude}&lon=${coords.longitude}`;
@@ -100,4 +99,6 @@ const nextISSTimesForMyLocation = function(callback) {
   });
 };
 
-module.exports = { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes, nextISSTimesForMyLocation };
+
+
+module.exports = { nextISSTimesForMyLocation };
